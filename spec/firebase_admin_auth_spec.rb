@@ -6,9 +6,9 @@ RSpec.describe FirebaseAdminAuth do
     expect(FirebaseAdminAuth::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
-  end
+  # it "does something useful" do
+  #   expect(false).to eq(true)
+  # end
 
   describe "any" do
     let(:service_account_json_key) { "./config/credentials/test-json-key" }

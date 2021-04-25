@@ -19,7 +19,7 @@ module FirebaseAdminAuth
         email_verified: true
       )
 
-      @service.signup_new_user(request_signup)
+      result = @service.signup_new_user(request_signup)
       result.local_id
     end
   end
