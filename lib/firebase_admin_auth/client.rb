@@ -2,7 +2,8 @@ require 'google/apis/identitytoolkit_v3'
 
 module FirebaseAdminAuth
   class Client
-    SCOPE = 'https://www.googleapis.com/auth/identitytoolkit'
+    SCOPE = 'https://www.googleapis.com/auth/identitytoolkit'.freeze
+    MAX_TIMES = 3.freeze
 
     def initialize(service_account_json_key)
       @service = Google::Apis::IdentitytoolkitV3::IdentityToolkitService.new
@@ -19,8 +20,22 @@ module FirebaseAdminAuth
         email_verified: true
       )
 
-      result = @service.signup_new_user(request_signup)
-      result.local_id
+      attempt_times = 0
+      begin
+        attempt_times += 1
+        @result = @service.signup_new_user(request_signup)
+      rescue => e
+        if attempt_times <= MAX_TIMES
+          retry
+        else
+          puts e
+          raise
+        end
+      ensure
+        puts 'finish'
+      end
+
+      @result.local_id
     end
   end
 end
